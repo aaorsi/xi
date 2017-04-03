@@ -1,0 +1,209 @@
+/*  Here a density field replaces the set of particles.
+	Each new 'particle' will have a weight depending on 
+	a particular mass assignment scheme */
+ 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <strings.h>
+#include "allvars.h"
+
+int iwrap(int i, int Ng)
+{
+int iw;
+	if(i >= 1 && i <= Ng) 
+		iw = i;
+	else if (i > Ng)
+		iw = i - Ng;	
+	else if (i < 0)
+		iw = i + Ng;
+	return(iw);
+}
+
+void densityfield(particle *Data, particle *Field, unsigned long NData)
+{
+	
+
+	FILE *fout;
+	char OutDens[NCHARMAX];
+	unsigned long i, j, k, ioc,idField;
+	unsigned int ix, iy, iz, igx, igy, igz;
+	float xf,yf,zf, vw, wx, wy, wz;
+	int ig, jg, kg;
+	unsigned long Nfp = 0;
+/*	 These loops assign each Field 'particle' a position (the centre 
+	 of the cell) */
+
+	for(i = 0; i < NFPX; i++)
+	{
+		for(j = 0; j < NFPY; j++)
+		{
+			for(k = 0; k < NFPZ; k++)
+			{
+				idField = (long) (i + j*NFPX + NFPY*NFPZ*k);
+				Field[idField].id = idField;
+				Field[idField].x =  NFPX*i + XLength/(2*NFPX);
+				Field[idField].y =  NFPY*j + YLength/(2*NFPY);
+				Field[idField].z =  NFPZ*k + ZLength/(2*NFPZ);					
+				Nfp++;
+			}
+		}
+	}
+			
+	NData = Nfp;
+/*	This loop assigns a weight to each Field 'particle',
+	following a mass assignment scheme. */
+
+	switch(MassAss)
+	{
+		case 0:
+		/*Here the weight is determined by the number of particles
+		on a given sub-cell */
+
+			for(i = 0; i < NData-1; i++)
+			{	
+				ix = (int) (Data[i].x * NFPX/XLength);
+				iy = (int) (Data[i].y * NFPY/YLength);
+				iz = (int) (Data[i].z * NFPZ/ZLength);
+				idField = (long) (ix + iy*NFPX + NFPY*NFPZ*iz);
+				Field[idField].weight++;
+			}
+		break;
+	
+		case 1: 
+			printf("Applying NGP scheme\n");
+/* This is the NGP scheme, quite similar to the previous one */
+
+			for(i = 0; i < NData-1; i++)
+			{
+				ix = round( Data[i].x * NFPX/BoxSize );
+				iy = round( Data[i].y * NFPY/BoxSize );
+				iz = round( Data[i].z * NFPZ/BoxSize );
+				idField = (long) (ix + iy*NFPX + NFPY*NFPZ*iz);
+				Field[idField].weight++;
+			}
+		break;
+			
+		case 2:
+			printf("Applying CIC scheme\n");
+// The CIC mass assignment scheme 
+			for(i = 0; i < NData-1; i++)
+			{	
+//			Rescale the particle coordinates to be in units of the grid
+				xf = Data[i].x * NFPX/XLength;
+				yf = Data[i].y * NFPY/YLength;
+				zf = Data[i].z * NFPZ/ZLength;	
+		
+				ix = (int) (xf - 0.5);
+				iy = (int) (yf - 0.5);
+				iz = (int) (zf - 0.5);
+
+/*	Here ix,iy,iz represents the coordinates of the 'first cell' that receives 
+	a contribution by the particle */
+			
+				for (igx = ix; igx <= ix+1; igx++)
+				{
+					(strcmp(PeriodicFlag,"true") == 0) ? (ig = iwrap(igx, NFPX)) : (ig = igx);
+					ig = igx;
+					vw = xf - ig - 0.5;
+//	CIC weight:
+					(vw < 1.0) ? (wx = 1- vw) : 0; 
+					for (igy = iy; igy <= iy + 1; igy++)
+					{
+						(strcmp(PeriodicFlag,"true") == 0) ? (jg = iwrap(igy, NFPY)) : (jg = igy);
+						vw = yf - jg - 0.5;
+						(vw < 1.0) ? (wy = 1- vw) : 0; 
+						for (igz = iz; igz <= iz + 1; igz++)
+						{
+							(strcmp(PeriodicFlag,"true") == 0) ? (kg = iwrap(igz, NFPZ)) : (kg = igz);
+							vw = zf - kg - 0.5;
+							(vw < 1.0) ? (wz = 1- vw) : 0; 
+							idField = (long) (igx + igy*NFPX + NFPY*NFPZ*igz);
+							if (idField <= Nfp && idField >= 0) 
+								Field[idField].weight = Field[idField].weight + wx*wy*wz;
+						}
+					}	
+				}
+		break;
+			
+		case 4:
+//		TSC scheme
+			printf("Applying the TSC scheme\n");
+	
+			for(i = 0; i < NData-1; i++)
+			{	
+//			Rescale the particle coordinates to be in units of the grid
+				xf = Data[i].x * NFPX/XLength;
+				yf = Data[i].y * NFPY/YLength;
+				zf = Data[i].z * NFPZ/ZLength;	
+		
+				ix = (int) xf;
+				iy = (int) yf;
+				iz = (int) zf;
+			
+				for (igx = ix-1; igx <= ix+1; igx++)
+				{							
+					(strcmp(PeriodicFlag,"true") == 0) ? (ig = iwrap(igx, NFPX)) : (ig = igx);
+					vw = abs(xf - ig - 0.5);
+//TSC weight:
+					if (vw <= 0.5) 
+						wx = 0.75 - SQR(vw);
+					else if (vw <= 1.5)
+						wx = 0.5 * SQR((1.5-vw));
+					else 
+						wx = 0;
+
+					for (igy = iy-1; igy <= iy+1; igy++)
+					{							
+						(strcmp(PeriodicFlag,"true") ==0) ? (jg = iwrap(igy, NFPY)) : (jg = igy);
+						vw = abs(yf - jg - 0.5);
+						if (vw <= 0.5) 
+							wy = 0.75 - SQR(vw);
+						else if (vw <= 1.5)
+							wy = 0.5 * SQR((1.5-vw));
+						else 
+							wy = 0;
+	
+						for (igz = iz-1; igz <= iz+1; igz++)
+						{							
+							(strcmp(PeriodicFlag,"true") == 0) ? (kg = iwrap(igz, NFPZ)) : (kg = igz);
+							vw = abs(zf - kg - 0.5);
+							if (vw <= 0.5) 
+								wz = 0.75 - SQR(vw);
+							else if (vw <= 1.5)
+								wz = 0.5 * SQR((1.5-vw));
+							else 
+								wz = 0;
+							idField = (long) (igx + igy*NFPX + NFPY*NFPZ*igz);
+							if (idField <= Nfp && idField >= 0) 
+								Field[idField].weight = Field[idField].weight + wx*wy*wz;
+
+						}
+					}
+				}
+			break;
+		default:
+			printf("densityfield.c: No valid assignment scheme selected. \n");	
+			printf(" MassAssn: %d\n",MassAss);
+			exit(0);
+		break;
+	}
+	
+	printf("Density field created\n");
+	
+#ifdef DEBUG
+
+	OutDens = OutDir "densityfield.dat";	
+	printf("Writing density field file: %s\n",OutDens);
+	fout = fopen(OutDens, "w");	
+	for(i = 0; i<=Nfp; i++) 
+		fprintf("%f\t %f\t %f\t\t %f\n",Field[i].x, Field[i].y, Field[i].z, Field[i].weight);
+	fclose(fout);
+	printf("Done\n");
+
+#endif
+
+}
+
+

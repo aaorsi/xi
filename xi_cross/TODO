@@ -1,0 +1,18 @@
+
+In order of relevance:
+
+	* Check the periodic boundary conditions
+
+	* Check the final result when using many fragments, 
+	  apparently gives an overestimation. The problem might be
+	  on readxi.pro instead of the code itself
+
+	* Test xi when using DensityFieldFlag = 'false'
+	  - Implement the splitting of the random catalogue and 
+		several independent RR counts
+
+	* Implement the calculation of Xi(sigma, pi)
+
+	* Implement a simple parallelisation for usage in Cosma
+
+Last update: 9/06/08

@@ -1,0 +1,133 @@
+#!/bin/tcsh
+
+#$ -S /bin/tcsh
+#$ -cwd
+
+# Script to run Xi code. All parameters are specified here.
+# For fragmented runs, two parameters are specified when calling
+# this script, NrunDD and NrunRR, which specifies the number 
+# of fragments of DD and RR data used for each run. If 
+# NRunDD or NRunRR are set to zero or 1, then there is only 1 
+# output file.
+# 
+# DD Runs output fragments of DD and DR. RR Runs output 
+# only RR Data. Then the code ???? is used to merge them
+# into a single output file.
+
+# For example, to run Xi on 10 DD Files and 20 RR Files then use
+# ./runXi 10 20 
+
+
+
+set run = 'Data'	#	'Data', 'Random', 'All'
+
+set NRunDD = $1
+set NRunRR = $2
+
+set XiSrc = 'Xi'	
+set Seed = 38217
+set DataDir = '/gal/r3/aaorsi/BAO/Out/Cat/'
+set ParticleData = $DataDir'part1'	
+set RandomData = $DataDir'ran1'
+set DataFormat = 1	# Input File format (see read_data.c for details)
+set OutDir = 'test/'	#Directory with all fragmented output files, generic name
+mkdir -p $OutDir
+set Periodic = 'false'
+set XLength = 1200
+set YLength = 1200
+set ZLength = 0
+
+# Random cataloge parameters
+set Frac = 1	# NRandom / NData
+set NRun = 1  # The number of times RR will be computed (for each fragment)
+
+# Parameter for Cells
+set CellSizeX = 2	 
+set NNeighbour = 2
+
+# Parameters for Density Field
+set DensityField = 'true'
+set MassAss = 1						#1: NGP, 2: CIC, 3: TSC
+set FPSizeX = 1 
+
+set LogBin = 'true'
+set BinSize = 0.1
+set RMin = 1
+set RMax = 20
+
+# To ensure that the parameters are passed correctly to the 
+# program, the code will print all the above list. To avoid this
+# set the following parameter to 'false'
+
+set CheckParam = 'true'
+
+@ nDD = 1
+@ nRR = 1
+
+##
+# CDM queue parameters
+
+set TaskN = 'Xi_'
+set BatchQueue = '-l es'
+
+
+##
+
+echo $run
+
+if ($run == 'All') then 
+
+	while ($nDD <= $NRunDD)
+	
+		set TaskName = $TaskN'DD_'$nDD
+	
+		echo $TaskName
+
+	#	qsub -N $TaskName $BatchQueue $XiSrc'Xi' \
+	 	$XiSrc \
+		'Data' $NRunDD $nDD $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
+		$XLength $YLength $ZLength $Frac $NRun $CellSizeX $NNeighbour $DensityField $MassAss\
+		$FPSizeX $LogBin $BinSize $RMin $RMax $CheckParam
+
+		@ nDD++
+	end
+
+	while ($nRR <= $NRunRR)
+	
+		set TaskName = $TaskN'RR_'$nRR
+	
+		echo $TaskName
+	
+#	qsub -N $TaskName $BatchQueue $XiSrc'Xi' \
+		$XiSrc \
+		'Random' $NRunRR $nRR $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
+		$XLength $YLength $ZLength $Frac $NRun $CellSizeX $NNeighbour $DensityField $MassAss\
+		$FPSizeX $LogBin $BinSize $RMin $RMax $CheckParam
+
+		@ nRR++
+	end
+
+	echo ' Done! '	
+	##
+endif
+
+if ($run == 'Data') then
+	
+	echo 'Running Data'
+	 
+	while ($nDD <= $NRunDD)
+	
+		set TaskName = $TaskN'DD_'$nDD
+	
+		echo $TaskName
+
+	#	qsub -N $TaskName $BatchQueue $XiSrc'Xi' \
+	 	$XiSrc \
+		'Data' $NRunDD $nDD $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
+		$XLength $YLength $ZLength $Frac $NRun $CellSizeX $NNeighbour $DensityField $MassAss\
+		$FPSizeX $LogBin $BinSize $RMin $RMax $CheckParam
+
+		@ nDD++
+	end
+endif
+
