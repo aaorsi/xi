@@ -11,7 +11,7 @@
 void counting_2d(unsigned long n1,const particle *center,const particle *part, unsigned long iadd[], long hoc[],double xx[])
 {
 	unsigned int NCellFragment, Cell_init, Cell_last;
-	unsigned int ih, j, ii, jj, min,sec,hashes, hashesTotal;
+	unsigned int ih, j, ii, jj, min,sec,hashes, hashesTotal,idd;
 	unsigned int u=(2*NNeighbour+1)*(2*NNeighbour+1)*(2*NNeighbour+1);
 	long nearcell[u], index, i;
 	float rsigma,rpi,dx,dy,dz,wc,wp;
@@ -32,8 +32,9 @@ void counting_2d(unsigned long n1,const particle *center,const particle *part, u
 
 	printf("\t");
 	(void) time(&tstart);
-	for (i=0,j=0; i<NSigmaBINMAX, j<NPiBINMAX; i++, j++)
-		xx[i,j] = 0;
+	for (i=0,j=0; i<NBINMAX, j<NBINMAX; i++, j++)
+		idd = i + j * NBINMAX
+    xx[idd] = 0;
 
 	step = (int) (RMax - RMin)/BinSize;
 
@@ -63,12 +64,12 @@ void counting_2d(unsigned long n1,const particle *center,const particle *part, u
 						rsigma = log10(rsigma);
 						rpi = log10(rpi);
 					}
-					if ((rsigma <= RSigmaMax) && (rsigma >= RSigmaMin) && (rpi <= RPiMax) && (rpi >= RPiMin))
+					if ((rsigma <= RMax) && (rsigma >= RMin) && (rpi <= RMax) && (rpi >= RMin))
 					{
-						jj = (int) ((rpi - RPiMin)/BinSizePi);
-						ii = (int) ((rsigma - RSigmaMin)/BinSizeSigma);
-
-						xx[ii,jj] = xx[ii,jj] + wc*wp;
+						jj = (int) ((rpi - RMin)/BinSize);
+						ii = (int) ((rsigma - RMin)/BinSize);
+            idd = ii + NBINMAX*jj
+						xx[idd] += wc*wp;
 					}
 					index = iadd[index];
 				}
