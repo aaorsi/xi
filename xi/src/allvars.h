@@ -24,7 +24,7 @@ typedef struct {
 extern unsigned long NData, NRandom, NRead, Nfp;
 extern int DataFormat, MassAss;
 extern char OutDir[NCHARMAX], PeriodicFlag[NCHARMAX], DensityFieldFlag[NCHARMAX],LogBinFlag[NCHARMAX], RandomFlag[NCHARMAX];
-extern char OutDD[NCHARMAX], OutDR[NCHARMAX], OutRR[NCHARMAX], Name[NCHARMAX], PType[NCHARMAX];
+extern char OutDD[NCHARMAX], OutDR[NCHARMAX], OutRR[NCHARMAX], Name[NCHARMAX], PType[NCHARMAX],CorrType[NCHARMAX];
 extern float CellSizeX, CellSizeY, CellSizeZ;
 extern float FPSizeX, FPSizeY, FPSizeZ;
 extern int NNeighbour;
