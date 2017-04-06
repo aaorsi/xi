@@ -7,9 +7,9 @@
 #define dprintf(expr) printf(#expr " = %f\n", expr)
 #define dprints(expr) printf(#expr " = %s\n", expr)
 #define SQR(a) ((a)*(a))
-#define NCELLMAX 10000
-#define NMAX 900000
-#define NBINMAX 100
+#define NCELLMAX 100000
+#define NMAX 9000000
+#define NBINMAX 200
 #define NCHARMAX 255
 
 typedef struct {

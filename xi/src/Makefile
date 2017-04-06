@@ -52,7 +52,7 @@ EXEC   = Xi
 
 OBJS   = main.o  allvars.o\
          	read_data.o assigncell.o densityfield.o linkedlist.o \
-         	counting.o selectcells.o write_xifile.o byte_swap.o\
+         	counting.o counting_2d.o selectcells.o write_xifile.o byte_swap.o\
 			
 
 INCL   =  proto.h allvars.h byte_swap.h Makefile

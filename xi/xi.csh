@@ -19,18 +19,22 @@
 # set the following parameter to 'false'
 
 set paramdir = 'pars/'
-set runName = 'xi2d_sag'
+set RunName = $1
+set nDD = $2
+set nRR = $3
 
 
-set nDD = $1
-set nRR = $2
 
-set OutDir = $3
+
+#########
 # Define here parameters specific to a particular run
-if ($Name == 'xi2d_sag') then 
 
-  source $paramdir$Name'.csh'
+if ($RunName == 'xi2d_sag') then 
+
+  source $paramdir$RunName'.csh'
   set ParticleData = $DataDir$4
+  set OutDir = '/home/CEFCA/aaorsi/work/sag_mdpl/data/xidata/'$RunName'/'
+  
   mkdir -p $OutDir
   set run = 'Data'	#	'Data', 'Random', 'All'
 
@@ -40,29 +44,22 @@ endif
 
 if ($run == 'All') then 
 
-		set OutDD = $OutDir'DD'$Name'_'$NRunDD'.'$nDD
-		set OutDR = $OutDir'DR'$Name'_'$NRunDD'.'$nDD
-		set OutRR = $OutDir'RR'$Name'_'$NRunRR'.'$nRR
+		set OutDD = $OutDir'DD'$RunName'_'$NRunDD'.'$nDD
+		set OutDR = $OutDir'DR'$RunName'_'$NRunDD'.'$nDD
+		set OutRR = $OutDir'RR'$RunName'_'$NRunRR'.'$nRR
 
-		set TaskName = $TaskN'DD_'$nDD
-	
-		echo $TaskName
 
 		./$XiSrc 'Data' $NRunDD $nDD $Seed $ParticleData \
 		$RandomData $DataFormat $OutDir $Periodic $XLength \
 		$YLength $ZLength $RandomFlag $Frac $NRun $CellSizeX $NNeighbour \
 		$DensityField $MassAss $FPSizeX $LogBin $BinSize $RMin \
-		$RMax $OutDD $OutDR $OutRR $CheckParam
+		$RMax $OutDD $OutDR $OutRR 
 
-		set TaskName = $TaskN'RR_'$nRR
-	
-		echo $TaskName
-	
 		./$XiSrc 'Random' $NRunRR $nRR $Seed $ParticleData \
 		$RandomData $DataFormat $OutDir $Periodic $XLength $YLength \
 		$ZLength $RandomFlag $Frac $NRun $CellSizeX $NNeighbour $DensityField \
 		$MassAss $FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR \
-		$OutRR $CheckParam
+		$OutRR 
 
 	echo ' Done! '	
 	##
@@ -72,20 +69,20 @@ if ($run == 'Data') then
 	
 	echo 'Running Data'
 	
-		set OutDD = $OutDir'DD'$Name'_'$NRunDD'.'$nDD
-		set OutDR = $OutDir'DR'$Name'_'$NRunDD'.'$nDD
-		set OutRR = $OutDir'RR'$Name'_'$NRunRR'.'$nRR
+		set OutDD = $OutDir'DD'$RunName'_'$NRunDD'.'$nDD
+		set OutDR = $OutDir'DR'$RunName'_'$NRunDD'.'$nDD
+		set OutRR = $OutDir'RR'$RunName'_'$NRunRR'.'$nRR
 		
 		echo \
 		$CorrType 'Data' $NRunDD $nDD $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
 		$XLength $YLength $ZLength $RandomFlag $Frac $NRun $CellSizeX $NNeighbour $DensityField $MassAss\
-		$FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR $OutRR $CheckParam
+		$FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR $OutRR 
 
 
 		$XiSrc \
 		$CorrType 'Data' $NRunDD $nDD $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
 		$XLength $YLength $ZLength $RandomFlag $Frac $NRun $CellSizeX $NNeighbour $DensityField $MassAss\
-		$FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR $OutRR $CheckParam
+		$FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR $OutRR 
 
 endif
 
@@ -93,14 +90,14 @@ if ($run == 'Random') then
 	
 	echo 'Running Random'
 	 
-		set OutDD = $OutDir'DD'$Name'_'$NRunDD'.'$nDD
-		set OutDR = $OutDir'DR'$Name'_'$NRunDD'.'$nDD
-		set OutRR = $OutDir'RR'$Name'_'$NRunRR'.'$nRR
+		set OutDD = $OutDir'DD'$RunName'_'$NRunDD'.'$nDD
+		set OutDR = $OutDir'DR'$RunName'_'$NRunDD'.'$nDD
+		set OutRR = $OutDir'RR'$RunName'_'$NRunRR'.'$nRR
 		
 		./$XiSrc \
 		$CorrType 'Random' $NRunRR $nRR $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
 		$XLength $YLength $ZLength $RandomFlag $Frac $NRun $CellSizeX $NNeighbour $DensityField $MassAss\
-		$FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR $OutRR $CheckParam
+		$FPSizeX $LogBin $BinSize $RMin $RMax $OutDD $OutDR $OutRR 
 
 #		@ nDD++
 #	end

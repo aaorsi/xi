@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   particle *Data;
   particle *Random;
     char  ParticleData[NCHARMAX], RandomData[NCHARMAX];
-  char CheckParamFlag[5], OutFile[NCHARMAX], OutDD[NCHARMAX], OutDR[NCHARMAX], OutRR[NCHARMAX];
+  char OutFile[NCHARMAX], OutDD[NCHARMAX], OutDR[NCHARMAX], OutRR[NCHARMAX];
   char buf1[10],buf2[10];
   float CellSizeX_old, FPSizeX_old;
     
@@ -75,11 +75,7 @@ int main(int argc, char *argv[])
   strcpy(OutDD,argv[_i++]);
   strcpy(OutDR,argv[_i++]);
   strcpy(OutRR,argv[_i++]);
-  strcpy(CheckParamFlag,argv[_i++]);
   
-//  Check that the Input Parameters are correctly passed:
-//  if(strcmp(CheckParamFlag, "true") == 0) 
-//  {
   printf(" INPUT CONFIGURATION: \n -------------------\n");
   printf("Current run parameters:\n");
   printf("  Data Type: %s\n",PType);

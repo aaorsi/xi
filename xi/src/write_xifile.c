@@ -34,7 +34,7 @@ void write_xifile(char *out,double d1[], float Num)
         else
         {  
           r[i] = RMin + i*BinSize +BinSize/2.;
-          rpi[j] = RMin + i*BinSize +BinSize/2.;
+          rpi[j] = RMin + j*BinSize +BinSize/2.;
         }
         
         idd = i + NBINMAX*j;

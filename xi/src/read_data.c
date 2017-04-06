@@ -53,7 +53,6 @@ void read_data(char *filename, particle *Data)
 			while (!feof(fin))
 			{
 				fscanf(fin,"%f %f %f",&Data[i].x, &Data[i].y,&Data[i].z);
-//				fscanf(fin,"%d %f %f %f %f",&ijunk0,&Data[i].x, &Data[i].y,&Data[i].z,&fjunk1);
 				Data[i].id = i;
 				Data[i].weight = 1;
 				if (ZLength == 0)
