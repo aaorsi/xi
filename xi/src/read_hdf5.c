@@ -8,7 +8,7 @@
 #include "allvars.h"
 #include "proto.h"
 
-void read_gadget(char *fname, particle *part,long npart)
+void read_gadget(char *fname, particle *Data,long npart)
 {
   
   hid_t file_id = H5Fopen(fname, H5F_ACC_RDONLY, H5P_DEFAULT);
@@ -29,21 +29,57 @@ void read_gadget(char *fname, particle *part,long npart)
 */
 
   /* Allocate storage */
-  float *pos = malloc(3*sizeof(float)*npart);
-  float *vel = malloc(3*sizeof(float)*npart);
+  
+  float *X = malloc(sizeof(float)*npart);
+  float *Y = malloc(sizeof(float)*npart);
+  float *Z = malloc(sizeof(float)*npart);
+  float *Vx = malloc(sizeof(float)*npart);
+  float *Vy = malloc(sizeof(float)*npart);
+  float *Vz = malloc(sizeof(float)*npart);
 
   /* Read positions and velocities */
-  if(H5LTread_dataset_float(file_id, "tes", pos) < 0)
+  if(H5LTread_dataset_float(file_id, "X", X) < 0)
     {
       printf("Unable to read positions!\n");
       exit(1);   
     }
-  if(H5LTread_dataset_float(file_id, "PartType1/Velocities", vel) < 0)
+
+  if(H5LTread_dataset_float(file_id, "Y", Y) < 0)
     {
-      printf("Unable to read velocities!\n");
+      printf("Unable to read positions!\n");
+      exit(1);   
+    }
+  if(H5LTread_dataset_float(file_id, "Z", Z) < 0)
+    {
+      printf("Unable to read positions!\n");
+      exit(1);   
+    }
+  if(H5LTread_dataset_float(file_id, "Vx", Vx) < 0)
+    {
+      printf("Unable to read positions!\n");
+      exit(1);   
+    }
+  if(H5LTread_dataset_float(file_id, "Vy", Vy) < 0)
+    {
+      printf("Unable to read positions!\n");
+      exit(1);   
+    }
+  if(H5LTread_dataset_float(file_id, "Vz", Vz) < 0)
+    {
+      printf("Unable to read positions!\n");
       exit(1);   
     }
 
+
+  for (i = 0; i < npart ; i++)
+  {
+    Data[i].x = X[i];
+    Data[i].y = Y[i];
+    Data[i].z = Z[i];
+    Data[i].id = i;
+    Data[i].weight = 1;
+
+    
   /* Write out particle data */
   int i;
   for(i=0;i<npfile[1];i+=1)
