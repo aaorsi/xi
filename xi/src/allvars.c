@@ -2,7 +2,7 @@
 unsigned long NData, NRandom, NRead, Nfp;
  int DataFormat, MassAss;
  char OutDir[NCHARMAX], PeriodicFlag[NCHARMAX], DensityFieldFlag[NCHARMAX],LogBinFlag[NCHARMAX], RandomFlag[NCHARMAX];
- char OutDD[NCHARMAX], OutDR[NCHARMAX], OutRR[NCHARMAX], Name[NCHARMAX], PType[NCHARMAX];
+ char OutDD[NCHARMAX], OutDR[NCHARMAX], OutRR[NCHARMAX], Name[NCHARMAX], PType[NCHARMAX],CorrType[NCHARMAX];
  float CellSizeX, CellSizeY, CellSizeZ;
  float FPSizeX, FPSizeY, FPSizeZ;
  int NNeighbour;

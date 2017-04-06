@@ -119,15 +119,15 @@ int main(int argc, char *argv[])
 
   if (strcmp(CorrType,"xi2d") == 0)
   {
-    ndd = (double * ) malloc(NBINMAX*NBINMAX*sizeof(long));
-    ndr = (double * ) malloc(NBINMAX*NBINMAX*sizeof(long));
-    nrr = (double * ) malloc(NBINMAX*NBINMAX*sizeof(long));
+    nDD = (double * ) malloc(NBINMAX*NBINMAX*sizeof(long));
+    nDR = (double * ) malloc(NBINMAX*NBINMAX*sizeof(long));
+    nRR = (double * ) malloc(NBINMAX*NBINMAX*sizeof(long));
   }
   else
   {
-    ndd = (double * ) malloc(NBINMAX*sizeof(long));
-    ndr = (double * ) malloc(NBINMAX*sizeof(long));
-    nrr = (double * ) malloc(NBINMAX*sizeof(long));
+    nDD = (double * ) malloc(NBINMAX*sizeof(long));
+    nDR = (double * ) malloc(NBINMAX*sizeof(long));
+    nRR = (double * ) malloc(NBINMAX*sizeof(long));
   }
 
   CellSizeX_old = CellSizeX;
@@ -308,5 +308,9 @@ else
 }
 
   printf("Part %d/%d done!\n\n",nXX,NRunXX);fflush(stdout);
+  
+  free(nDD);
+  free(nDR);
+  free(nRR);
   return 0;
 }

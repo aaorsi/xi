@@ -9,7 +9,7 @@
 
 void write_xifile(char *out,double d1[], float Num)
 {
-  int i;
+  int i,idd,j;
   FILE *fout;
   
   NBins = floor((RMax - RMin)/BinSize);
@@ -37,7 +37,7 @@ void write_xifile(char *out,double d1[], float Num)
           rpi[j] = RMin + i*BinSize +BinSize/2.;
         }
         
-        idd = i + NBINMAX*j
+        idd = i + NBINMAX*j;
         
         fprintf(fout,"%f \t %f \t %15.5f\n",r[i],rpi[j],d1[idd]);
 
