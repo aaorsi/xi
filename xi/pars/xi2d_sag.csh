@@ -9,8 +9,6 @@ set CorrType = 'xi2d' # xi2d, xi, xiproj, xicross, marked_xi, etc...
 
 set DataDir = '/home/CEFCA/aaorsi/work/sag_mdpl/data/'
 set BinSize = 1.0				# BinSize is in log-units if LogBin == 'true'
-set NRunDD = 40
-set NRunRR = 1
 
 set XiSrc = 'src/Xi'	
 set Seed = 38217
@@ -31,7 +29,7 @@ set NRun = 1  # The number of times RR will be computed (for each fragment)
 
 # Parameter for Cells
 set CellSizeX = 40.0
-set NNeighbour = 1
+set NNeighbour = 3
 
 # Parameters for Density Field
 set DensityField = 'false'
@@ -39,6 +37,6 @@ set MassAss = 1						#1: NGP, 2: CIC, 3: TSC
 set FPSizeX = 10
 
 set LogBin = 'false'
-set RMin = 0.	# RMin and RMax are never specified in log-units
-set RMax = 40.
+set RMin = 0.1	# RMin and RMax are never specified in log-units. Don't set RMin to zero
+set RMax = 120.
 
