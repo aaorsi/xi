@@ -37,7 +37,7 @@ void write_xifile(char *out,double d1[], float Num)
           rpi[j] = RMin + j*BinSize +BinSize/2.;
         }
         
-        idd = i + NBINMAX*j;
+        idd = j + NBINMAX*i;
         
         fprintf(fout,"%f \t %f \t %15.5f\n",r[i],rpi[j],d1[idd]);
 

@@ -31,7 +31,7 @@ set NRun = 1  # The number of times RR will be computed (for each fragment)
 
 # Parameter for Cells
 set CellSizeX = 40.0
-set NNeighbour = 3
+set NNeighbour = 1
 
 # Parameters for Density Field
 set DensityField = 'false'
@@ -40,5 +40,5 @@ set FPSizeX = 10
 
 set LogBin = 'false'
 set RMin = 0.	# RMin and RMax are never specified in log-units
-@ RMax = $CellSizeX * $NNeighbour
+set RMax = 40.
 

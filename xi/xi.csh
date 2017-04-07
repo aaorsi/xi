@@ -23,6 +23,9 @@ set RunName = $1
 set nDD = $2
 set nRR = $3
 
+set fname = $4
+set NRunDD = $5
+set NRunRR = $6
 
 
 
@@ -32,9 +35,9 @@ set nRR = $3
 if ($RunName == 'xi2d_sag') then 
 
   source $paramdir$RunName'.csh'
-  set ParticleData = $DataDir$4
+  set ParticleData = $DataDir$fname
+  set OutName = 'xi2d_'$fname
   set OutDir = '/home/CEFCA/aaorsi/work/sag_mdpl/data/xidata/'$RunName'/'
-  
   mkdir -p $OutDir
   set run = 'Data'	#	'Data', 'Random', 'All'
 
@@ -44,9 +47,9 @@ endif
 
 if ($run == 'All') then 
 
-		set OutDD = $OutDir'DD'$RunName'_'$NRunDD'.'$nDD
-		set OutDR = $OutDir'DR'$RunName'_'$NRunDD'.'$nDD
-		set OutRR = $OutDir'RR'$RunName'_'$NRunRR'.'$nRR
+		set OutDD = $OutDir'DD'$OutName'_'$NRunDD'.'$nDD
+		set OutDR = $OutDir'DR'$OutName'_'$NRunDD'.'$nDD
+		set OutRR = $OutDir'RR'$OutName'_'$NRunRR'.'$nRR
 
 
 		./$XiSrc 'Data' $NRunDD $nDD $Seed $ParticleData \
@@ -69,9 +72,9 @@ if ($run == 'Data') then
 	
 	echo 'Running Data'
 	
-		set OutDD = $OutDir'DD'$RunName'_'$NRunDD'.'$nDD
-		set OutDR = $OutDir'DR'$RunName'_'$NRunDD'.'$nDD
-		set OutRR = $OutDir'RR'$RunName'_'$NRunRR'.'$nRR
+		set OutDD = $OutDir'DD'$OutName'_'$NRunDD'.'$nDD
+		set OutDR = $OutDir'DR'$OutName'_'$NRunDD'.'$nDD
+		set OutRR = $OutDir'RR'$OutName'_'$NRunRR'.'$nRR
 		
 		echo \
 		$CorrType 'Data' $NRunDD $nDD $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \
@@ -90,9 +93,9 @@ if ($run == 'Random') then
 	
 	echo 'Running Random'
 	 
-		set OutDD = $OutDir'DD'$RunName'_'$NRunDD'.'$nDD
-		set OutDR = $OutDir'DR'$RunName'_'$NRunDD'.'$nDD
-		set OutRR = $OutDir'RR'$RunName'_'$NRunRR'.'$nRR
+		set OutDD = $OutDir'DD'$OutName'_'$NRunDD'.'$nDD
+		set OutDR = $OutDir'DR'$OutName'_'$NRunDD'.'$nDD
+		set OutRR = $OutDir'RR'$OutName'_'$NRunRR'.'$nRR
 		
 		./$XiSrc \
 		$CorrType 'Random' $NRunRR $nRR $Seed $ParticleData $RandomData $DataFormat $OutDir $Periodic \

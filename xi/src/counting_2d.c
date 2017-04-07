@@ -33,7 +33,7 @@ void counting_2d(unsigned long n1,const particle *center,const particle *part, u
 	printf("\t");
 	(void) time(&tstart);
 	for (i=0,j=0; i<NBINMAX, j<NBINMAX; i++, j++)
-		idd = i + j * NBINMAX;
+		idd = j + i * NBINMAX;
     xx[idd] = 0;
 
 	step = (int) (RMax - RMin)/BinSize;
@@ -68,7 +68,7 @@ void counting_2d(unsigned long n1,const particle *center,const particle *part, u
 					{
 						jj = (int) ((rpi - RMin)/BinSize);
 						ii = (int) ((rsigma - RMin)/BinSize);
-            idd = ii + NBINMAX*jj;
+            idd = jj + NBINMAX*ii;
 						xx[idd] += wc*wp;
 					}
 					index = iadd[index];
