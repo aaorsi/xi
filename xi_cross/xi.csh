@@ -28,7 +28,7 @@ set NRunRR = $3
 set nDD = $4
 set nRR = $5
 
-set XiSrc = '/home/aaorsi/work/xi/xi_cross/src/Xi'
+set XiSrc = './src/Xi'
 set Seed = 38217
 set DataDir = $7 
 set ParticleData1 = $DataDir$8
@@ -38,13 +38,13 @@ set ParticleData2 = $DataDir$9
 #set ParticleData = $DataDir'sxds'
 set RandomData = 'none'
 set DataFormat = 1	# Input File format (see read_data.c for details)
-set OutDir = '/home/aaorsi/work/xi/xi_cross/Output/'$Name'/'	#Directory with all fragmented output files, generic name
+set OutDir = './Output/'$Name'/'	#Directory with all fragmented output files, generic name
 mkdir -p $OutDir
 set Periodic = 'true'
 
-set XLength = 500.0
-set YLength = 500.0
-set ZLength = 500.0
+set XLength = 250.0
+set YLength = 250.0
+set ZLength = 250.0
 
 #set XLength = 1340
 #set YLength = 1340
@@ -65,9 +65,9 @@ set DensityField = 'false'
 set MassAss = 1						#1: NGP, 2: CIC, 3: TSC
 set FPSizeX = 10
 
-set LogBin = 'true'
-set RMin = 0.1		# RMin and RMax are never specified in log-units
-set RMax = 20.0
+set LogBin = 'false'
+set RMin = 0.5		# RMin and RMax are never specified in log-units
+set RMax = 10.0
 
 # To ensure that the parameters are passed correctly to the 
 # program, the code will print all the above list. To avoid this
