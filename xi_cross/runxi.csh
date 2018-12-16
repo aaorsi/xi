@@ -14,10 +14,10 @@ set NRunDR = 1
 set periodic = 1
 set clean = 0	# Warning, it will delete old log-files
 
-set DataDir = '../data/'
+set DataDir = '/Users/aaorsi/work/Tomas/'
 
-set ParticleData1 = 'part.txt'
-set ParticleData2 = 'randata.txt'
+set ParticleData1 = 'central-catalogue-mh13.0-co-Mpc-z2.2.txt'
+set ParticleData2 = 'hae-catalogue-Ha-25-co-Mpc-z2.2.txt'
 set Name = 'test'
 set nfiles = 1
 

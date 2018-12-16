@@ -42,9 +42,9 @@ set OutDir = './Output/'$Name'/'	#Directory with all fragmented output files, ge
 mkdir -p $OutDir
 set Periodic = 'true'
 
-set XLength = 250.0
-set YLength = 250.0
-set ZLength = 250.0
+set XLength = 543
+set YLength = 543
+set ZLength = 543
 
 #set XLength = 1340
 #set YLength = 1340

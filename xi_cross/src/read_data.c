@@ -52,7 +52,7 @@ void read_data(char *filename, particle *Data)
 			printf("case 0\n");
 			while (!feof(fin))
 			{
-				fscanf(fin,"%f %f %f %f %f",&junk, &Data[i].x, &Data[i].y, &Data[i].z, &junk);
+				fscanf(fin,"%f %f %f ",&Data[i].x, &Data[i].y, &Data[i].z);
 				Data[i].id = i;
 				Data[i].weight = 1;
 				if (ZLength == 0)
@@ -64,9 +64,10 @@ void read_data(char *filename, particle *Data)
 
 		case 1:
 // This is the default format
+			printf("case 1\n");
 			while (!feof(fin))
 			{
-				fscanf(fin,"%f %f %f %f",&junk, &Data[i].x, &Data[i].y, &Data[i].z);
+				fscanf(fin,"%f %f %f", &Data[i].x, &Data[i].y, &Data[i].z);
 				Data[i].id = i;
 				Data[i].weight = 1;
 				if (ZLength == 0)
